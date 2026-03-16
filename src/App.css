@@ -1,0 +1,170 @@
+:root {
+  --bg-color: #050505;
+  --accent: #00d4ff;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  color: #fff;
+  font-family: "Sawarabi Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "MS PMincho", serif;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.app-header {
+  position: relative;
+  z-index: 110;
+  padding: 10px 30px;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  box-sizing: border-box;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  font-weight: 900;
+  line-height: 40px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  background: #000;
+}
+
+/* 左側：エディタパネル */
+.editor-panel {
+  width: 320px;
+  min-width: 320px;
+  background: #000;
+  border-right: 1px solid #222;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
+
+textarea { 
+  flex: 1;
+  background: #0a0a0a; 
+  color: var(--accent); 
+  border: 1px solid #333; 
+  padding: 15px; 
+  font-family: 'JetBrains Mono', monospace; 
+  font-size: 0.9rem;
+  outline: none;
+  resize: none;
+}
+
+.shortcut-guide {
+  background: #0a0a0a;
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #222;
+}
+
+.shortcut-guide h3 { font-size: 0.7rem; color: #555; margin: 0 0 10px 0; }
+.guide-grid { display: grid; gap: 8px; }
+.guide-item { font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 10px; }
+.key { background: #222; color: var(--accent); padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+
+/* 右側：ビジュアライザーパネル（ここをコンパクトに） */
+.visualizer-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px; /* 周囲に余白を持たせて小さく見せる */
+  position: relative;
+  background: #050505;
+}
+
+/* 4:5の固定窓（モニター） */
+.viz-monitor {
+  position: relative;
+  height: 90vh; /* 画面に収まる高さ */
+  aspect-ratio: 4 / 5;
+  background: #000;
+  box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 30px rgba(0, 212, 255, 0.1);
+  border: 1px solid #222;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-viewport {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-ripple-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.bg-layer {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  /* ズームした状態で上部から時計回りに移動 */
+  animation: panClockwise 20s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes panClockwise {
+  0% { transform: scale(1.5) translate(0, -10%); }
+  25% { transform: scale(1.5) translate(10%, 0); }
+  50% { transform: scale(1.5) translate(0, 10%); }
+  75% { transform: scale(1.5) translate(-10%, 0); }
+  100% { transform: scale(1.5) translate(0, -10%); }
+}
+
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent, rgba(0,0,0,0.7));
+  z-index: 1;
+}
+
+/* マップウィンドウをモニター内に固定 */
+.map-window {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.tree-container {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 80px; /* パディングを調整して中央寄りに */
+  min-width: 600px;
+}
+
+/* ヘッダー内コントロール */
+.global-controls { display: flex; gap: 20px; align-items: center; }
+.control-group { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #888; }
+.toggle-ui-btn { background: #111; color: #fff; border: 1px solid #333; padding: 5px 15px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+.toggle-ui-btn:hover { border-color: var(--accent); }
+.val-display { color: var(--accent); min-width: 30px; }
+
+.highlight { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
