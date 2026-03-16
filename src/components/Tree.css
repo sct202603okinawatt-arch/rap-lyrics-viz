@@ -1,48 +1,36 @@
-/* 全体のレイアウト設定 */
+/* 全体のコンテナ */
 .tree-container {
   display: flex;
   flex-direction: column;
-  padding: 100px 40px 100px 120px !important;
+  padding: 100px 50px;
   position: relative;
   min-height: 100vh;
 }
 
-/* 左側の「一本の通った縦線」 */
-.tree-container::before {
-  content: "" !important;
-  position: absolute !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 60px !important;
-  width: 4px !important;
-  background: #ffffff !important;
-  z-index: 10 !important;
-  display: block !important;
-}
-
-/* 各ノードのラッパー */
+/* 各階層のラッパー */
 .node-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
   position: relative;
-  padding-left: 0 !important;
-  margin-left: 0 !important;
+  width: 100%;
 }
 
+/* 階層を繋ぐ「縦線」：親の左下の角から伸びる */
 .children-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
   position: relative;
-  padding-left: 0 !important;
-  margin-left: 0 !important;
-  border-left: none !important;
+  /* 親の左端（x=0）に合わせて縦線を引く */
+  border-left: 3px solid #ffffff;
+  /* 子要素を右にずらして階段状にする */
+  margin-left: 2px; /* 縦線の位置調整 */
+  padding-left: 60px;
+  margin-top: -10px; /* 親ボックスとの隙間調整 */
+  margin-bottom: 20px;
 }
 
-/* 見出しボックス */
+/* 見出しボックス本体 */
 .node-content {
-  margin-left: 40px !important;
   padding: 16px 24px;
   border-radius: 12px;
   cursor: pointer;
@@ -50,33 +38,72 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: visible !important;
-  margin-bottom: 30px;
+  overflow: visible;
+  margin-bottom: 20px;
+  margin-top: 10px;
   border: 2px solid #ffffff !important;
   background: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(8px);
-  z-index: 20 !important;
+  z-index: 1;
+  width: fit-content;
+  min-width: 200px;
 }
 
-/* ボックスの左中央から縦線へ伸びる「横線」 */
-.node-content::after {
-  content: "" !important;
-  position: absolute !important;
-  top: 50% !important;
-  left: -64px !important;
-  width: 64px !important;
-  height: 4px !important;
-  background: #ffffff !important;
-  transform: translateY(-50%) !important;
-  z-index: 10 !important;
-  display: block !important;
+/* 縦線から子の左中央へ繋ぐ「横線」 */
+.node-content::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -63px; /* children-containerのpadding-left分を繋ぐ */
+  width: 63px;
+  height: 3px;
+  background: #ffffff;
+  transform: translateY(-50%);
+  z-index: 0;
 }
 
-.type-section { background: rgba(255, 255, 0, 0.1) !important; border-color: rgba(255, 255, 0, 0.5) !important; }
-.type-section .node-label { font-size: 3.2rem !important; }
-.type-mid { background: rgba(255, 20, 147, 0.1) !important; border-color: rgba(255, 20, 147, 0.5) !important; }
-.type-mid .node-label { font-size: 2.0rem !important; }
-.type-small, .type-tiny { background: rgba(147, 0, 255, 0.1) !important; border-color: rgba(147, 0, 255, 0.5) !important; }
-.type-small .node-label { font-size: 1.3rem !important; }
+/* ルート（大見出し）には線を出さない */
+.depth-0 > .node-content::before {
+  display: none;
+}
+/* 一番外側の縦線は不要なので消す */
+.tree-container > .node-wrapper > .children-container {
+  border-left: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+/* ただし、大見出しから中見出しへの縦線は必要 */
+.depth-0 > .children-container {
+  border-left: 3px solid #ffffff;
+  margin-left: 10px; /* 大見出しの枠線に合わせる */
+}
 
-.node-label { font-family: "Sawarabi Mincho", serif; font-weight: 900; color: #ffffff; line-height: 1.2; }
+/* --- 大中小のスタイル --- */
+.type-section .node-label {
+  font-size: 2.8rem !important;
+  color: #ffff00 !important; /* 黄色 */
+}
+
+.type-mid .node-label {
+  font-size: 1.8rem !important;
+  color: #ff1493 !important; /* ピンク */
+}
+
+.type-small, .type-tiny {
+  font-size: 1.2rem !important;
+  color: #ffffff !important; /* 白 */
+}
+
+.node-label {
+  font-family: "Sawarabi Mincho", serif;
+  font-weight: 900;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+/* フォーカス（選択中）の演出 */
+.node-content.focused {
+  background: rgba(0, 212, 255, 0.2) !important;
+  border: 3px solid #00d4ff !important;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5) !important;
+}
