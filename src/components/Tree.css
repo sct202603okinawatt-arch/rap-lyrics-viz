@@ -1,140 +1,82 @@
+/* 全体のレイアウト設定 */
+.tree-container {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 40px 100px 120px !important;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* 左側の「一本の通った縦線」 */
+.tree-container::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 60px !important;
+  width: 4px !important;
+  background: #ffffff !important;
+  z-index: 10 !important;
+  display: block !important;
+}
+
+/* 各ノードのラッパー */
 .node-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   position: relative;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
 }
 
-/* ツリー接続線（縦） */
 .children-container {
   display: flex;
   flex-direction: column;
   width: 100%;
   position: relative;
-  padding-left: 40px; /* 子要素を全体的にインデント */
-  border-left: 2px solid rgba(255, 255, 255, 0.2); /* 縦線をここに配置 */
-  margin-left: 40px; /* 親ノードの左端から少し離す */
-  margin-top: -20px;
-  margin-bottom: 20px;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  border-left: none !important;
 }
 
+/* 見出しボックス */
 .node-content {
+  margin-left: 40px !important;
   padding: 16px 24px;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: hidden;
-  margin-bottom: 20px; /* マージンを少し詰める */
-  border: 2px solid rgba(255, 255, 255, 0.3) !important;
-  background: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(4px);
-  z-index: 1;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  overflow: visible !important;
+  margin-bottom: 30px;
+  border: 2px solid #ffffff !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px);
+  z-index: 20 !important;
 }
 
-/* 子要素への横線 */
-.node-wrapper::before {
-  content: "";
-  position: absolute;
-  top: 35px; /* node-content の中心付近 */
-  left: -40px; /* children-container の border-left まで届くように */
-  width: 40px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.2);
+/* ボックスの左中央から縦線へ伸びる「横線」 */
+.node-content::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: -64px !important;
+  width: 64px !important;
+  height: 4px !important;
+  background: #ffffff !important;
+  transform: translateY(-50%) !important;
+  z-index: 10 !important;
+  display: block !important;
 }
 
-/* ルート要素（depth-0）には横線とインデント縦線をつけない */
-.depth-0.node-wrapper::before { display: none; }
-.depth-0 > .children-container { border-left: none; margin-left: 0; padding-left: 0; }
-/* depth-0 の下の子要素たち（depth-1相当）のための縦線 */
-.depth-0 > .children-container > .node-wrapper::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -2px; /* border-leftの位置 */
-  width: 2px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-}
+.type-section { background: rgba(255, 255, 0, 0.1) !important; border-color: rgba(255, 255, 0, 0.5) !important; }
+.type-section .node-label { font-size: 3.2rem !important; }
+.type-mid { background: rgba(255, 20, 147, 0.1) !important; border-color: rgba(255, 20, 147, 0.5) !important; }
+.type-mid .node-label { font-size: 2.0rem !important; }
+.type-small, .type-tiny { background: rgba(147, 0, 255, 0.1) !important; border-color: rgba(147, 0, 255, 0.5) !important; }
+.type-small .node-label { font-size: 1.3rem !important; }
 
-/* --- 大中小の圧倒的な区別 --- */
-
-/* 大：特大・黄・左端 */
-.type-section { 
-  align-self: flex-start; 
-  width: auto; 
-  min-width: 300px;
-  max-width: 90%;
-  background: rgba(255, 255, 0, 0.1) !important;
-  border-color: rgba(255, 255, 0, 0.4) !important;
-}
-.type-section .node-label { 
-  font-size: 3.2rem !important; 
-  text-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
-}
-
-/* 中：中・ピンク */
-.type-mid { 
-  align-self: flex-start; 
-  width: auto;
-  min-width: 250px;
-  max-width: 85%;
-  background: rgba(255, 20, 147, 0.1) !important; 
-  border-color: rgba(255, 20, 147, 0.4) !important;
-}
-.type-mid .node-label { 
-  font-size: 2.0rem !important; 
-  text-shadow: 0 0 12px rgba(255, 20, 147, 0.3);
-}
-
-/* 小：小・紫 */
-.type-small, .type-tiny { 
-  align-self: flex-start; 
-  width: auto;
-  min-width: 200px;
-  max-width: 80%;
-  background: rgba(147, 0, 255, 0.1) !important; 
-  border-color: rgba(147, 0, 255, 0.4) !important;
-}
-.type-small .node-label, .type-tiny .node-label { 
-  font-size: 1.3rem !important; 
-}
-
-/* 共通ラベル設定 */
-.node-label {
-  font-family: "Sawarabi Mincho", serif;
-  font-weight: 900;
-  line-height: 1.2;
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-}
-
-/* --- 蛍光フォーカス時 --- */
-.node-content.focused {
-  background: rgba(0, 212, 255, 0.2) !important;
-  border: 2px solid #00d4ff !important;
-  box-shadow: 0 0 40px rgba(0, 212, 255, 0.4) !important;
-  transform: translateX(10px); /* 少し右にずらして強調 */
-}
-
-.node-content.focused .node-label {
-  color: #ffffff !important;
-  text-shadow: 0 0 15px #00d4ff !important;
-}
-
-.char-span {
-  display: inline-block;
-  white-space: pre-wrap;
-}
-
-/* スクロールバーの非表示（必要なら） */
-.tree-container::-webkit-scrollbar {
-  display: none;
-}
+.node-label { font-family: "Sawarabi Mincho", serif; font-weight: 900; color: #ffffff; line-height: 1.2; }
