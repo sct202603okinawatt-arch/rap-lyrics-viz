@@ -1,108 +1,108 @@
-.tree-container {
+.node-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 100px 50px 100px 120px;
+  width: 100%;
   position: relative;
-  min-height: 100vh;
 }
 
-.tree-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 60px;
-  width: 4px;
-  background: #ffffff;
-  z-index: 1;
+.node-content {
+  padding: 16px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+/* --- 大中小の圧倒的な区別 --- */
+
+/* 大：特大・黄・左端（少し右へ戻す） */
+.type-section { 
+  align-self: flex-start; 
+  width: 75%; 
+  margin-left: 3%; 
+  background: rgba(255, 255, 0, 0.3) !important; /* 黄色 */
+  border: none !important; 
+}
+.type-section .node-label { 
+  font-size: 3.5rem !important; 
+  text-align: left; 
+  justify-content: flex-start;
+}
+
+/* 中：中・黄・中央 */
+.type-mid { 
+  align-self: center; 
+  width: 75%; 
+  background: rgba(255, 20, 147, 0.3) !important; 
+  border: none !important; 
+}
+.type-mid .node-label { 
+  font-size: 2.2rem !important; 
+  text-align: left; 
+  justify-content: flex-start; 
+}
+
+/* 小：小・紫・右端（少し左へ戻す） */
+.type-small, .type-tiny { 
+  align-self: flex-end; 
+  width: 55%; 
+  margin-right: 3%; 
+  background: rgba(255, 20, 147, 0.3) !important; 
+  border: none !important; 
+}
+.type-small .node-label, .type-tiny .node-label { 
+  font-size: 1.4rem !important; 
+  text-align: left; /* 左揃えに変更 */
+  justify-content: flex-start; /* 左揃えに変更 */
+}
+
+/* 共通ラベル設定 */
+.node-label {
+  font-family: "Sawarabi Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "MS PMincho", serif;
+  font-weight: 900;
+  line-height: 1.1;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  letter-spacing: 0.05em;
+
+  /* 通常時の水色・白輪郭の立体文字 */
+  color: #00d4ff;
+  text-shadow: 
+    -1px -1px 0 #ffffff,  
+     1px -1px 0 #ffffff,
+    -1px  1px 0 #ffffff,
+     1px  1px 0 #ffffff,
+     2px  2px 0px #0088aa; /* 立体感のための影 */
+}
+
+/* --- 蛍光フォーカス時の強制白文字 --- */
+.node-content.focused {
+  background: rgba(0, 212, 255, 1) !important; /* 完全に蛍光色 */
+  border: 4px solid #ffffff !important;
+  z-index: 1000;
+  box-shadow: 0 0 70px rgba(0, 212, 255, 0.8) !important;
+}
+
+/* フォーカス時は子要素すべてを絶対に白にする */
+.node-content.focused .node-label,
+.node-content.focused .char-span {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+.char-span {
+  display: inline-block;
+  white-space: pre-wrap;
 }
 
 .children-container {
   display: flex;
   flex-direction: column;
-  position: relative;
-  border-left: 3px solid #ffffff;
-  margin-left: 10px;
-  padding-left: 60px;
-  margin-top: -5px;
-  margin-bottom: 20px;
-}
-
-.depth-0 > .children-container {
-  border-left: none;
-}
-
-.node-content {
-  padding: 16px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  overflow: visible;
-  margin-bottom: 20px;
-  border: 2px solid #ffffff !important;
-  background: #000000 !important;
-  z-index: 5;
-  width: fit-content;
-  min-width: 220px;
-  transition: all 0.3s ease;
-}
-
-.node-content::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -63px;
-  width: 63px;
-  height: 3px;
-  background: #ffffff;
-  transform: translateY(-50%);
-  z-index: 2;
-}
-
-.type-section {
-  margin-left: -82px;
-  border: 4px solid #ffffff !important;
-  z-index: 10;
-}
-.type-section::before {
-  left: -30px;
-  width: 30px;
-}
-.type-section .node-label {
-  font-size: 6.0rem !important;
-  color: #ffff00 !important;
-  line-height: 1.0;
-  text-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
-}
-
-.type-mid { margin-left: 0px; }
-.type-mid .node-label { font-size: 2.5rem !important; color: #ff1493 !important; }
-
-.type-small { margin-left: 0px; }
-.type-small .node-label { font-size: 1.2rem !important; color: #ffffff !important; }
-
-@keyframes pulse-glow {
-  0% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); border-color: #00d4ff; }
-  50% { box-shadow: 0 0 50px rgba(0, 212, 255, 1.0); border-color: #ffffff; }
-  100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); border-color: #00d4ff; }
-}
-
-@keyframes text-glow {
-  0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); color: #ffffff; }
-  50% { text-shadow: 0 0 25px rgba(0, 212, 255, 1.0); color: #00d4ff; }
-  100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); color: #ffffff; }
-}
-
-.node-content.focused {
-  background: #000000 !important;
-  border-width: 5px !important;
-  animation: pulse-glow 1.5s infinite ease-in-out;
-  z-index: 100;
-}
-
-.node-content.focused .node-label {
-  animation: text-glow 1.5s infinite ease-in-out;
+  width: 100%;
 }

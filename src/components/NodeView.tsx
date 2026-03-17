@@ -45,8 +45,8 @@ export const NodeView: React.FC<NodeViewProps> = ({
   };
 
   const charVariants = {
-    hidden: { opacity: 0, y: 10, scale: 0.9, color: "#ffffff" },
-    visible: { opacity: 1, y: 0, scale: 1, color: "#ffffff" }
+    hidden: { opacity: 0, y: 10, scale: 0.9, color: "#00d4ff" },
+    visible: { opacity: 1, y: 0, scale: 1, color: "#00d4ff" }
   };
 
   const focusedCharVariants = {

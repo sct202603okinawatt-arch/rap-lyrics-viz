@@ -156,8 +156,7 @@ textarea {
 .tree-container {
   display: flex;
   flex-direction: column;
-  padding: 100px 80px; /* パディングを調整して中央寄りに */
-  min-width: 600px;
+  padding: 200px 40px; /* 上下に余白を持たせてスクロールの遊びを作る */
 }
 
 /* ヘッダー内コントロール */
